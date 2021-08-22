@@ -55,7 +55,7 @@
     <van-cell title="小智同学" is-link to="/home" />
     <!-- 小智同学 结束 -->
     <!-- 退出登录 开始 -->
-    <van-cell v-if="isLogin" value="退出登录" center @click="getCurrentInfo" />
+    <van-cell v-if="isLogin" value="退出登录" center @click="logOut" />
     <!-- 退出登录 借宿 -->
   </div>
 </template>
@@ -67,7 +67,7 @@ export default {
   name: 'MyIndex',
   data () {
     return {
-      isLogin: true,
+      isLogin: this.user,
       currentUserInfo: {}
     }
   },
@@ -75,6 +75,9 @@ export default {
     async getCurrentInfo () {
       const { data } = await getUserInfo()
       this.currentUserInfo = data.data
+    },
+    logOut () {
+      this.$store.commit('setUser', null)
     }
   },
   created () {
