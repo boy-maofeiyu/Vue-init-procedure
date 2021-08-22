@@ -7,7 +7,7 @@
  */
 export const setItem = (name, value) => {
   // 判断value类型
-  if (typeof value === 'Object') {
+  if (typeof value === 'object') {
     // 转换成JSON格式
     value = JSON.stringify(value)
   }

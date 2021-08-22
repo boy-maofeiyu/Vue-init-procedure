@@ -97,8 +97,10 @@ export default {
         })
         // 发送登录请求
         const { data } = await login(this.user)
+        // 存储token到vuex中
+        this.$store.commit('setUser', data.data)
         // 提示登录成功
-        console.log('登录成功', data)
+        console.log('登录成功', data.data)
         this.$toast({
           message: '登录成功',
           type: 'success'
