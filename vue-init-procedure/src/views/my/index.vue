@@ -33,7 +33,7 @@
       </van-cell-group>
       <!-- 登录状态 结束 -->
       <!-- 未登录状态 开始 -->
-      <div class="my-unlogin" v-else>
+      <div class="my-unlogin" v-else @click="toLogin">
         <div class="phone-login">
           <img
             src="https://i0.hdslb.com/bfs/album/1492be6ec64e6328e1fe16540cdf2dee65ae1c8f.png"
@@ -91,6 +91,10 @@ export default {
         .catch(() => {
           // on cancel
         })
+    },
+    // 点击登录,跳转登录界面
+    toLogin () {
+      this.$router.push('/login')
     }
   },
   created () {
