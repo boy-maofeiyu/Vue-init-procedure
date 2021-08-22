@@ -86,10 +86,22 @@ export default {
     // 登录 表单提交事件
     async onSubmit () {
       try {
+        // 发送登录请求
         const { data } = await login(this.user)
+        // 提示登录成功
         console.log('登录成功', data)
+        this.$toast({
+          message: '登录成功',
+          position: 'top'
+        })
       } catch (e) {
         // 登录失败操作
+        console.dir(e.response.status) // 400
+        // 提示登录失败
+        this.$toast({
+          message: '登录失败',
+          position: 'top'
+        })
       }
     },
     // 发送短信验证码
@@ -100,9 +112,18 @@ export default {
         await sendSms(this.user.mobile)
         // 进入count状态
         this.countDown.isCountDown = false
+        // 提示验证码发送成功
+        this.$toast({
+          message: '验证码发送成功',
+          position: 'top'
+        })
       } catch (e) {
+        console.dir(e.response.status) // 404手机号不正确 429 接口访问次数受限 
         // 短信发送失败
-        console.log(e.message)
+        this.$toast({
+          message: '验证码发送失败',
+          position: 'top'
+        })
       }
     },
     // 验证码倒计时结束
