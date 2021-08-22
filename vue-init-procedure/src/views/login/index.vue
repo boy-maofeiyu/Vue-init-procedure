@@ -29,16 +29,25 @@
           placeholder="请输入验证码"
           :rules="formRules.codeRules"
         >
-          <!-- 发送验证码开始 -->
           <template #button>
+            <!-- 发送验证码开始 -->
             <van-button
+              v-if="countDown.isCountDown"
               size="small"
               type="primary"
               @click.prevent="clicksendSms"
               >获取验证码</van-button
             >
+            <!-- 发送验证码结束 -->
+            <!-- 验证码倒计时开始 -->
+            <van-count-down
+              v-else
+              :time="countDown.time"
+              :format="countDown.format"
+              @finish="countFinish"
+            />
+            <!-- 验证码倒计时结束 -->
           </template>
-          <!-- 发送验证码结束 -->
         </van-field>
       </van-cell-group>
       <!-- 登录按钮开始 -->
@@ -64,6 +73,12 @@ export default {
       formRules: {
         mobileRules: [{ required: true, message: '请填写手机号' }],
         codeRules: [{ required: true, message: '请填写验证码' }]
+      },
+      // 验证码倒计时控制
+      countDown: {
+        time: '60000',
+        isCountDown: true,
+        format: 'ss'
       }
     }
   },
@@ -83,10 +98,17 @@ export default {
         await this.$refs.form.validate('mobile')
         // 短信发送成功
         await sendSms(this.user.mobile)
+        // 进入count状态
+        this.countDown.isCountDown = false
       } catch (e) {
         // 短信发送失败
         console.log(e.message)
       }
+    },
+    // 验证码倒计时结束
+    countFinish () {
+      // 恢复发送code
+      this.countDown.isCountDown = true
     }
   }
 }
