@@ -33,6 +33,7 @@
             <!-- 发送验证码开始 -->
             <van-button
               v-if="countDown.isCountDown"
+              :loading="countDown.loading"
               size="small"
               type="primary"
               @click.prevent="clicksendSms"
@@ -76,6 +77,7 @@ export default {
       },
       // 验证码倒计时控制
       countDown: {
+        loading: false,
         time: '60000',
         isCountDown: true,
         format: 'ss'
@@ -86,13 +88,20 @@ export default {
     // 登录 表单提交事件
     async onSubmit () {
       try {
+        // 加载中
+        this.$toast.loading({
+          duration: 10000,
+          message: '正在加载中',
+          forbidClick: true,
+          loadingType: 'spainner'
+        })
         // 发送登录请求
         const { data } = await login(this.user)
         // 提示登录成功
         console.log('登录成功', data)
         this.$toast({
           message: '登录成功',
-          position: 'top'
+          type: 'success'
         })
       } catch (e) {
         // 登录失败操作
@@ -100,13 +109,16 @@ export default {
         // 提示登录失败
         this.$toast({
           message: '登录失败',
-          position: 'top'
+          type: 'fail'
         })
       }
     },
     // 发送短信验证码
     async clicksendSms () {
       try {
+        // 等待禁止点击
+        this.countDown.loading = true
+        // 手动校验表单
         await this.$refs.form.validate('mobile')
         // 短信发送成功
         await sendSms(this.user.mobile)
@@ -118,13 +130,15 @@ export default {
           position: 'top'
         })
       } catch (e) {
-        console.dir(e.response.status) // 404手机号不正确 429 接口访问次数受限 
+        console.dir(e.response.status) // 404手机号不正确 429 接口访问次数受限
         // 短信发送失败
         this.$toast({
           message: '验证码发送失败',
           position: 'top'
         })
       }
+      // 无论成功失败解除loading
+      this.countDown.loading = false
     },
     // 验证码倒计时结束
     countFinish () {
