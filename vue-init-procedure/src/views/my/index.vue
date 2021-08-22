@@ -4,7 +4,10 @@
     <div class="my-header">
       <!-- 用户信息 开始 -->
       <!-- 登录状态 开始 -->
-      <van-cell-group v-if="isLogin" :key="this.currentUserInfo.id">
+      <van-cell-group
+        v-if="this.$store.state.user"
+        :key="this.currentUserInfo.id"
+      >
         <van-cell center>
           <img
             slot="icon"
@@ -55,7 +58,12 @@
     <van-cell title="小智同学" is-link to="/home" />
     <!-- 小智同学 结束 -->
     <!-- 退出登录 开始 -->
-    <van-cell v-if="isLogin" value="退出登录" center @click="logOut" />
+    <van-cell
+      v-if="this.$store.state.user"
+      value="退出登录"
+      center
+      @click="logOut"
+    />
     <!-- 退出登录 借宿 -->
   </div>
 </template>
@@ -67,8 +75,6 @@ export default {
   name: 'MyIndex',
   data () {
     return {
-      // 判断用户的登录状态
-      isLogin: this.$store.state.user,
       // 获取用户的个人信息
       currentUserInfo: {}
     }
@@ -76,8 +82,10 @@ export default {
   methods: {
     // 获取用户个人信息
     async getCurrentInfo () {
-      const { data } = await getUserInfo()
-      this.currentUserInfo = data.data
+      try {
+        const { data } = await getUserInfo()
+        this.currentUserInfo = data.data
+      } catch (e) {}
     },
     // 用户退出登录
     logOut () {
