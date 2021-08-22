@@ -29,7 +29,12 @@
         >
           <!-- 发送验证码开始 -->
           <template #button>
-            <van-button size="small" type="primary">获取验证码</van-button>
+            <van-button
+              size="small"
+              type="primary"
+              @click.prevent="clicksendSms"
+              >获取验证码</van-button
+            >
           </template>
           <!-- 发送验证码结束 -->
         </van-field>
@@ -43,7 +48,7 @@
 </template>
 
 <script>
-import { login } from '../../api/user.js'
+import { login, sendSms } from '../../api/user.js'
 export default {
   name: 'LoginIndex',
   data () {
@@ -67,6 +72,16 @@ export default {
         const { data } = await login(this.user)
         console.log('登录成功', data)
       } catch (e) {
+        // 登录失败操作
+      }
+    },
+    // 发送短信验证码
+    async clicksendSms () {
+      try {
+        // 短信发送成功
+        await sendSms(this.user.mobile)
+      } catch (e) {
+        // 短信发送失败
       }
     }
   }
