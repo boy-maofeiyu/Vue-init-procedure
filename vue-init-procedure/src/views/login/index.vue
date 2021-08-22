@@ -5,7 +5,7 @@
       title="注册/登录"
       left-text="返回"
       left-arrow
-      @click-left="this.$router.back()"
+      @click-left="toBack"
     />
     <!-- nav-bar导航栏结束 -->
     <!-- 表单开始 -->
@@ -103,6 +103,8 @@ export default {
           message: '登录成功',
           type: 'success'
         })
+        // 跳转回来的页面
+        this.toBack()
       } catch (e) {
         // 登录失败操作
         console.dir(e.response.status) // 400
@@ -144,6 +146,10 @@ export default {
     countFinish () {
       // 恢复发送code
       this.countDown.isCountDown = true
+    },
+    // 跳转回初始页面
+    toBack () {
+      this.$router.back()
     }
   }
 }
