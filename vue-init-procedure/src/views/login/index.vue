@@ -9,11 +9,12 @@
     />
     <!-- nav-bar导航栏结束 -->
     <!-- 表单开始 -->
-    <van-form @submit="onSubmit">
+    <van-form @submit="onSubmit" ref="form">
       <van-cell-group>
         <van-field
           v-model="user.mobile"
           label="手机号"
+          name="mobile"
           left-icon="smile-o"
           right-icon="warning-o"
           placeholder="请输入手机号"
@@ -21,6 +22,7 @@
         />
         <van-field
           v-model="user.code"
+          name="code"
           clearable
           label="验证码"
           left-icon="music-o"
@@ -78,10 +80,12 @@ export default {
     // 发送短信验证码
     async clicksendSms () {
       try {
+        await this.$refs.form.validate('mobile')
         // 短信发送成功
         await sendSms(this.user.mobile)
       } catch (e) {
         // 短信发送失败
+        console.log(e.message)
       }
     }
   }
