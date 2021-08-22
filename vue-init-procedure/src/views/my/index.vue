@@ -4,34 +4,35 @@
     <div class="my-header">
       <!-- 用户信息 开始 -->
       <!-- 登录状态 开始 -->
-      <van-cell-group v-if="isLogin">
-        <van-cell title="单元格" center>
+      <van-cell-group v-if="isLogin" :key="index">
+        <van-cell center>
           <img
             slot="icon"
-            src="https://img0.baidu.com/it/u=3419276493,3061530094&fm=26&fmt=auto&gp=0.jpg"
+            :src="this.currentUserInfo.photo"
             style="width:100px;height:100px"
           />
-          <span slot="title">有点66</span>
-          <span slot="right-icon">11111</span>
+          <span slot="title">{{ this.currentUserInfo.intro }}</span>
+          <span slot="right-icon">编辑资料</span>
         </van-cell>
         <van-cell>
           <van-grid :column-num="4">
             <van-grid-item icon="photo-o" text="头条">
-              <span slot="icon">1111</span>
+              <span slot="icon">{{ this.currentUserInfo.art_count }}</span>
             </van-grid-item>
             <van-grid-item icon="photo-o" text="关注">
-              <span slot="icon">1111</span>
+              <span slot="icon">{{ this.currentUserInfo.like_count }}</span>
             </van-grid-item>
             <van-grid-item icon="photo-o" text="粉丝">
-              <span slot="icon">1111</span>
+              <span slot="icon">{{ this.currentUserInfo.fans_count }}</span>
             </van-grid-item>
             <van-grid-item icon="photo-o" text="获赞">
-              <span slot="icon">1111</span>
+              <span slot="icon">{{ this.currentUserInfo.follow_count }}</span>
             </van-grid-item>
           </van-grid>
         </van-cell>
       </van-cell-group>
       <!-- 登录状态 结束 -->
+      <!-- 未登录状态 开始 -->
       <div class="my-unlogin" v-else>
         <div class="phone-login">
           <img
@@ -40,6 +41,7 @@
         </div>
         <div>点击登录</div>
       </div>
+      <!-- 未登录状态 结束 -->
       <!-- 用户信息 结束 -->
     </div>
     <!-- 我的页面头部结束 -->
