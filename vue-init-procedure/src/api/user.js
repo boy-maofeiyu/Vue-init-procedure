@@ -2,7 +2,6 @@
  * 用户API模块
  */
 import request from '@/utils/request'
-import store from '../store/index'
 /**
  * 登录请求
  */
