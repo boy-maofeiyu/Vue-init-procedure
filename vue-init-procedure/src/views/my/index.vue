@@ -4,7 +4,7 @@
     <div class="my-header">
       <!-- 用户信息 开始 -->
       <!-- 登录状态 开始 -->
-      <van-cell-group v-if="isLogin" :key="index">
+      <van-cell-group v-if="isLogin" :key="this.currentUserInfo.id">
         <van-cell center>
           <img
             slot="icon"
@@ -61,30 +61,41 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import { getUserInfo } from '../../api/user.js'
+import { Dialog } from 'vant'
 export default {
   name: 'MyIndex',
   data () {
     return {
-      isLogin: this.user,
+      // 判断用户的登录状态
+      isLogin: this.$store.state.user,
+      // 获取用户的个人信息
       currentUserInfo: {}
     }
   },
   methods: {
+    // 获取用户个人信息
     async getCurrentInfo () {
       const { data } = await getUserInfo()
       this.currentUserInfo = data.data
     },
+    // 用户退出登录
     logOut () {
-      this.$store.commit('setUser', null)
+      Dialog.confirm({
+        title: '您确定要退出登录吗'
+      })
+        .then(() => {
+          // on confirm
+          this.$store.commit('setUser', null)
+        })
+        .catch(() => {
+          // on cancel
+        })
     }
   },
   created () {
+    // 页面加载调用
     this.getCurrentInfo()
-  },
-  computed: {
-    ...mapState(['user'])
   }
 }
 </script>
