@@ -42,7 +42,13 @@
 export default {
   name: 'LoginIndex',
   data () {
-    return {}
+    return {
+      // 表单数据
+      user: {
+        mobile: '17715319639', // 用户手机号
+        code: '245810' // 用户验证码
+      }
+    }
   },
   methods: {}
 }
