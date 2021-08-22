@@ -53,18 +53,33 @@
     <van-cell title="小智同学" is-link to="/home" />
     <!-- 小智同学 结束 -->
     <!-- 退出登录 开始 -->
-    <van-cell v-if="isLogin" value="退出登录" center />
+    <van-cell v-if="isLogin" value="退出登录" center @click="getCurrentInfo" />
     <!-- 退出登录 借宿 -->
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { getUserInfo } from '../../api/user.js'
 export default {
   name: 'MyIndex',
   data () {
     return {
-      isLogin: false
+      isLogin: true,
+      currentUserInfo: {}
     }
+  },
+  methods: {
+    async getCurrentInfo () {
+      const { data } = await getUserInfo()
+      this.currentUserInfo = data.data
+    }
+  },
+  created () {
+    this.getCurrentInfo()
+  },
+  computed: {
+    ...mapState(['user'])
   }
 }
 </script>
